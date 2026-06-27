@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Chelsea 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sky: #7EC8E3;
+    --blue: #2B7FBF;
+    --deep-blue: #1A4A7A;
+    --midnight: #080E1A;
+    --navy: #0D1B2A;
+    --gold: #E8C97A;
+    --cream: #EDF4FA;
+    --electric: #4FACDE;
+    --smoke: rgba(255,255,255,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--midnight);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  #confetti-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+  }
+
+  .glow-orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(130px); opacity: 0.2;
+    pointer-events: none; z-index: 0;
+  }
+  .orb-1 { width: 580px; height: 580px; background: var(--blue); top: -220px; left: -180px; animation: drift 13s ease-in-out infinite alternate; }
+  .orb-2 { width: 480px; height: 480px; background: var(--electric); bottom: -160px; right: -140px; animation: drift 10s ease-in-out infinite alternate-reverse; }
+  .orb-3 { width: 320px; height: 320px; background: var(--gold); top: 45%; left: 50%; transform: translate(-50%,-50%); animation: drift 16s ease-in-out infinite alternate; opacity: 0.1; }
+
+  @keyframes drift { 0% { transform: translate(0,0); } 100% { transform: translate(40px,30px); } }
+
+  .petals-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .petal { position: absolute; top: -40px; opacity: 0.5; animation: fall linear infinite; }
+  @keyframes fall {
+    0%   { transform: translateY(-40px) rotate(0deg); opacity: 0.6; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .page-wrap {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto; padding: 0 24px 80px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 60px 0 40px;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.38em; text-transform: uppercase;
+    color: var(--sky); margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .crown-wrap {
+    font-size: 3.6rem; margin-bottom: 8px;
+    opacity: 0; animation: popIn 0.6s 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+
+  .script-name {
+    font-family: 'Pinyon Script', cursive;
+    font-size: clamp(4.5rem, 14vw, 9rem);
+    line-height: 0.9;
+    background: linear-gradient(135deg, var(--sky) 0%, var(--gold) 48%, var(--electric) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    opacity: 0; animation: fadeUp 1s 0.9s forwards; margin-bottom: 6px;
+  }
+
+  .aka {
+    font-size: 0.78rem; letter-spacing: 0.26em; text-transform: uppercase;
+    color: rgba(255,255,255,0.32); margin-bottom: 36px;
+    opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+  }
+
+  .hero-divider {
+    width: 110px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--electric), transparent);
+    margin: 0 auto 36px;
+    opacity: 0; animation: fadeIn 1s 1.4s forwards;
+  }
+
+  .hero-msg {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1.15rem, 3vw, 1.55rem); line-height: 1.75;
+    color: rgba(237,244,250,0.85); max-width: 540px;
+    opacity: 0; animation: fadeUp 1s 1.6s forwards;
+  }
+  .hero-msg em { font-style: normal; color: var(--sky); }
+
+  /* CAKE */
+  .cake-section {
+    display: flex; justify-content: center; padding: 36px 0;
+    opacity: 0; animation: fadeUp 1s 1.9s forwards;
+  }
+
+  .candle-flame {
+    animation: flicker 0.9s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+  }
+  @keyframes flicker {
+    0%   { transform: scaleY(1) scaleX(1); opacity: 1; }
+    50%  { transform: scaleY(1.15) scaleX(0.85); opacity: 0.9; }
+    100% { transform: scaleY(0.92) scaleX(1.1); opacity: 0.85; }
+  }
+
+  /* COUNTER */
+  .counter-strip {
+    display: flex; justify-content: center; gap: 44px;
+    margin: 4px 0 52px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 1s 2.1s forwards;
+  }
+  .counter-item { text-align: center; }
+  .counter-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem; font-weight: 600; color: var(--gold); line-height: 1;
+  }
+  .counter-label {
+    font-size: 0.62rem; letter-spacing: 0.26em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-top: 4px;
+  }
+
+  /* LETTER */
+  .letter-section {
+    background: var(--smoke);
+    border: 1px solid rgba(78,172,222,0.14);
+    border-radius: 20px; padding: 48px 44px;
+    backdrop-filter: blur(16px);
+    margin-bottom: 48px; position: relative; overflow: hidden;
+  }
+  .letter-section::after {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14rem; color: rgba(43,127,191,0.07);
+    position: absolute; top: -30px; left: 16px;
+    line-height: 1; pointer-events: none;
+  }
+  @media (max-width: 560px) { .letter-section { padding: 32px 22px; } }
+
+  .letter-tag {
+    display: inline-block; font-size: 0.63rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(232,201,122,0.28);
+    padding: 4px 14px; border-radius: 999px; margin-bottom: 28px;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+    line-height: 1.95; color: rgba(237,244,250,0.85);
+    position: relative; z-index: 1;
+  }
+  .letter-body p + p { margin-top: 18px; }
+  .letter-body strong { color: var(--sky); font-weight: 600; }
+
+  /* SHONA */
+  .shona-block {
+    margin-top: 38px; padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+  }
+  .shona-text {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.42rem);
+    color: var(--electric); line-height: 1.7;
+  }
+  .shona-sub {
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.28); margin-top: 8px; text-transform: uppercase;
+  }
+
+  .footer {
+    text-align: center; padding-top: 28px;
+    font-size: 0.7rem; letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.18); text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
+<div class="glow-orb orb-3"></div>
+<div class="petals-wrap" id="petals"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="page-wrap">
+
+  <section class="hero">
+    <p class="eyebrow">✦ A celebration for ✦</p>
+    <div class="crown-wrap">👑</div>
+    <h1 class="script-name">Chelsea</h1>
+    <p class="aka">aka Chelevita</p>
+    <div class="hero-divider"></div>
+    <p class="hero-msg">
+      Today the universe paused, took a breath,<br>
+      and decided to celebrate <em>you</em> — the way you've always deserved.
+    </p>
+  </section>
+
+  <!-- CAKE SVG — blue palette -->
+  <div class="cake-section">
+    <svg viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg" width="180" height="200">
+      <!-- candles -->
+      <rect x="56" y="48" width="8" height="28" rx="4" fill="#7EC8E3"/>
+      <rect x="87" y="38" width="8" height="34" rx="4" fill="#4FACDE"/>
+      <rect x="118" y="48" width="8" height="28" rx="4" fill="#E8C97A"/>
+      <!-- flames -->
+      <ellipse class="candle-flame" cx="60" cy="44" rx="5" ry="8" fill="#FFCC44" opacity="0.95"/>
+      <ellipse class="candle-flame" cx="91" cy="34" rx="5" ry="8" fill="#FF9944" opacity="0.95"/>
+      <ellipse class="candle-flame" cx="122" cy="44" rx="5" ry="8" fill="#FFD700" opacity="0.95"/>
+      <!-- top tier -->
+      <rect x="42" y="76" width="96" height="34" rx="6" fill="#2B7FBF"/>
+      <rect x="42" y="76" width="96" height="8" rx="4" fill="#7EC8E3" opacity="0.45"/>
+      <!-- frosting drips top -->
+      <path d="M48 84 Q54 93 60 84 Q66 93 72 84 Q78 93 84 84 Q90 93 96 84 Q102 93 108 84 Q114 93 120 84 Q126 93 132 84" stroke="white" stroke-width="3" fill="none" opacity="0.3"/>
+      <!-- middle tier -->
+      <rect x="28" y="108" width="124" height="38" rx="6" fill="#0D1B2A" stroke="#2B7FBF" stroke-width="1.5"/>
+      <rect x="28" y="108" width="124" height="10" rx="4" fill="#4FACDE" opacity="0.35"/>
+      <!-- deco dots -->
+      <circle cx="52" cy="130" r="5" fill="#E8C97A"/>
+      <circle cx="90" cy="130" r="5" fill="#7EC8E3"/>
+      <circle cx="128" cy="130" r="5" fill="#4FACDE"/>
+      <!-- bottom tier -->
+      <rect x="14" y="144" width="152" height="44" rx="8" fill="#1A4A7A"/>
+      <rect x="14" y="144" width="152" height="12" rx="6" fill="#7EC8E3" opacity="0.4"/>
+      <!-- frosting drips bottom -->
+      <path d="M22 156 Q30 167 38 156 Q46 167 54 156 Q62 167 70 156 Q78 167 86 156 Q94 167 102 156 Q110 167 118 156 Q126 167 134 156 Q142 167 150 156" stroke="white" stroke-width="3" fill="none" opacity="0.28"/>
+      <!-- plate -->
+      <ellipse cx="90" cy="190" rx="82" ry="10" fill="#080E1A"/>
+      <ellipse cx="90" cy="188" rx="78" ry="7" fill="#0D1B2A" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <!-- COUNTER -->
+  <div class="counter-strip">
+    <div class="counter-item">
+      <div class="counter-num" id="cnt-days">—</div>
+      <div class="counter-label">Days Celebrated</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num">∞</div>
+      <div class="counter-label">Wishes Sent</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num">1</div>
+      <div class="counter-label">Chelevita</div>
+    </div>
+  </div>
+
+  <!-- LETTER -->
+  <div class="letter-section">
+    <span class="letter-tag">✦ Happy Birthday Chelsea ✦</span>
+
+    <div class="letter-body">
+      <p>
+        Today belongs to <strong>Chelevita</strong> — no debate, no discussion.
+      </p>
+      <p>
+        On this day, I hope the joy finds its way back to you a hundredfold. I hope the laughter is the kind that makes your stomach hurt. I hope everyone who matters shows up for you the way you show up for them.
+      </p>
+      <p>
+        I hope the food is delicious, the vibes are <strong>immaculate</strong>, and the cake has exactly enough icing.
+      </p>
+      <p>
+        <strong>Happy Birthday, bro. This one's yours. 🎂🔵</strong>
+      </p>
+    </div>
+
+    <!-- SHONA CLOSER -->
+    <div class="shona-block">
+      <p class="shona-text">"Chero hako waiti une same birthday na Shy 😭🎉"</p>
+      <p class="shona-sub">— still celebrating you regardless 💙</p>
+    </div>
+  </div>
+
+  <footer class="footer">Made with love · Happy Birthday Chelsea 🔵</footer>
+</div>
+
+<script>
+// CONFETTI — blue palette
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+const colors = ['#7EC8E3','#4FACDE','#2B7FBF','#E8C97A','#ffffff','#1A4A7A'];
+const pieces = Array.from({length: 90}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height - canvas.height,
+  r: Math.random() * 6 + 3,
+  d: Math.random() * 90,
+  color: colors[Math.floor(Math.random() * colors.length)],
+  tiltAngle: 0,
+  tiltAngleIncrement: (Math.random() * 0.07) + 0.05,
+  speed: Math.random() * 1.2 + 0.5,
+  shape: Math.random() > 0.5 ? 'circle' : 'rect'
+}));
+
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  pieces.forEach(p => {
+    ctx.beginPath();
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.72;
+    if (p.shape === 'circle') {
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    } else {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.tiltAngle);
+      ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+      ctx.restore();
+    }
+    ctx.fill();
+    p.tiltAngle += p.tiltAngleIncrement;
+    p.y += (Math.cos(p.d) + p.speed);
+    p.x += Math.sin(p.d) * 0.5;
+    if (p.y > canvas.height) { p.y = -14; p.x = Math.random() * canvas.width; }
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(drawConfetti);
+}
+drawConfetti();
+
+// FLOATING STARS/SPARKLES (replacing flowers)
+const petalsWrap = document.getElementById('petals');
+const icons = ['⭐','✦','💙','🔵','❄️','✧'];
+for (let i = 0; i < 14; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = icons[Math.floor(Math.random() * icons.length)];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.animationDuration = (Math.random() * 8 + 7) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  p.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+  petalsWrap.appendChild(p);
+}
+
+// COUNTER
+const start = new Date(new Date().getFullYear(), 0, 1);
+const now = new Date();
+const days = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+const el = document.getElementById('cnt-days');
+let count = 0;
+const timer = setInterval(() => {
+  count += Math.ceil(days / 60);
+  if (count >= days) { count = days; clearInterval(timer); }
+  el.textContent = count.toLocaleString();
+}, 30);
+</script>
+</body>
+</html>
